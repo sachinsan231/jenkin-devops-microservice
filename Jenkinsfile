@@ -37,6 +37,21 @@ pipeline{
 				sh 'mvn failsafe:integration-test'
 			}
 		}
+
+		stage('Build Docker Image'){
+			steps{
+				//docker build -t sachinsan2131/currency-exchange-devops:${env:BUILD_TAG}
+				script{
+					dockerImage = docker.build("sachinsan2131/currency-exchange-devops:${env:BUILD_TAG}")
+				}
+			}
+		}
+
+		stage('Push Docker Image'){
+			script{
+					dockerImage.push('latest');
+				}
+		}
 	}
 	
 }
